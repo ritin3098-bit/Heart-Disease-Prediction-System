@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container my-5">
+    <!-- Hero Section -->
+    <div class="row align-items-center py-5 bg-light rounded-3 mb-5">
+        <div class="col-lg-6 px-4">
+            <h1 class="display-4 fw-bold text-primary mb-4">Heart Disease Prediction System</h1>
+            <p class="lead mb-4">Advanced machine learning system to predict heart disease risk using multiple algorithms and ensemble methods.</p>
+            <div class="d-flex gap-3">
+                <a href="{% url 'predict' %}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-stethoscope me-2"></i> Start Prediction
+                </a>
+                <a href="{% url 'data_analysis' %}" class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-chart-bar me-2"></i> View Analysis
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-6 p-4">
+            <div class="p-4 bg-white rounded-3 shadow-sm h-100">
+                <i class="fas fa-brain fa-4x text-primary mb-3 d-block text-center"></i>
+                <h3 class="text-center mb-3">AI-Powered Analysis</h3>
+                <p class="text-center text-muted">Uses 8 different machine learning algorithms with ensemble learning for accurate predictions.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-line fa-2x text-primary"></i>
+                    </div>
+                    <h5 class="card-title mb-3">Multiple Algorithms</h5>
+                    <p class="card-text text-muted">Combines Random Forest, SVM, Logistic Regression, and more for comprehensive analysis.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-shield-alt fa-2x text-info"></i>
+                    </div>
+                    <h5 class="card-title mb-3">Ensemble Learning</h5>
+                    <p class="card-text text-muted">Uses voting classifier to combine predictions from multiple models for better accuracy.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm">
+                <div class="card-body text-center p-4">
+                    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <i class="fas fa-chart-pie fa-2x text-warning"></i>
+                    </div>
+                    <h5 class="card-title mb-3">Detailed Results</h5>
+                    <p class="card-text text-muted">Get probability scores and predictions from each algorithm with visual charts.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="bg-light p-5 rounded-3">
+        <h2 class="text-center mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded-3 text-center h-100">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                        <span class="h4 mb-0">1</span>
+                    </div>
+                    <h5 class="h5">Input Data</h5>
+                    <p class="text-muted mb-0">Enter your health parameters</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded-3 text-center h-100">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                        <span class="h4 mb-0">2</span>
+                    </div>
+                    <h5 class="h5">AI Analysis</h5>
+                    <p class="text-muted mb-0">Multiple algorithms analyze your data</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded-3 text-center h-100">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                        <span class="h4 mb-0">3</span>
+                    </div>
+                    <h5 class="h5">Ensemble Prediction</h5>
+                    <p class="text-muted mb-0">Combines all model predictions</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="bg-white p-4 rounded-3 text-center h-100">
+                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px;">
+                        <span class="h4 mb-0">4</span>
+                    </div>
+                    <h5 class="h5">Results</h5>
+                    <p class="text-muted mb-0">Get detailed prediction results</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-section {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    }
+    
+    .step-circle {
+        width: 60px;
+        height: 60px;
+        background: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 0 auto 1rem;
+    }
+    
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+</style>
+{% endblock %}

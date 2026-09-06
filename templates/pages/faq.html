@@ -1,0 +1,72 @@
+{% extends 'pages/base_page.html' %}
+
+{% block page_title %}Frequently Asked Questions{% endblock %}
+
+{% block page_content %}
+<div class="faq-content">
+    <h2 class="h4 mb-4">Frequently Asked Questions</h2>
+    
+    <div class="accordion" id="faqAccordion">
+        <!-- FAQ Item 1 -->
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    How accurate is the heart disease prediction?
+                </button>
+            </h3>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Our prediction model is based on machine learning algorithms trained on comprehensive medical datasets. While it provides a good indication of potential risk factors, it should not replace professional medical advice.
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Item 2 -->
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    Is my personal health data secure?
+                </button>
+            </h3>
+            <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Yes, we take data security very seriously. All personal health information is encrypted and stored securely in compliance with relevant data protection regulations.
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Item 3 -->
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    How can I improve my heart health?
+                </button>
+            </h3>
+            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Maintaining a healthy lifestyle is key. This includes regular exercise, a balanced diet, avoiding smoking, limiting alcohol intake, and managing stress. Always consult with a healthcare professional for personalized advice.
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Item 4 -->
+        <div class="accordion-item">
+            <h3 class="accordion-header" id="headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Do I need an account to use the prediction tool?
+                </button>
+            </h3>
+            <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    No, you can use the basic prediction tool without an account. However, creating an account allows you to save your results and track your health metrics over time.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-5">
+        <h3 class="h5">Still have questions?</h3>
+        <p>If you can't find the answer to your question, please <a href="{% url 'contact' %}">contact us</a> and our support team will be happy to help.</p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Prediction Results - Heart Disease Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 mb-0">
+                            <i class="fas fa-heartbeat me-2"></i> Heart Disease Prediction Results
+                        </h2>
+                        <a href="{% url 'predict' %}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Prediction
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <!-- Prediction Result -->
+                    <div class="text-center mb-5">
+                        {% if has_heart_disease %}
+                        <div class="alert alert-danger" role="alert">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-exclamation-triangle fa-4x mb-3"></i>
+                                <h3 class="alert-heading">High Risk of Heart Disease Detected</h3>
+                                <p class="mb-0">Based on the provided information, there is a <strong>{{ confidence }}%</strong> probability of heart disease.</p>
+                                <p class="mt-2 mb-0">We strongly recommend consulting with a healthcare professional for further evaluation.</p>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-success" role="alert">
+                            <div class="d-flex flex-column align-items-center">
+                                <i class="fas fa-check-circle fa-4x mb-3"></i>
+                                <h3 class="alert-heading">Low Risk of Heart Disease</h3>
+                                <p class="mb-0">Based on the provided information, there is a <strong>{{ confidence }}%</strong> probability of not having heart disease.</p>
+                                <p class="mt-2 mb-0">However, we still recommend regular check-ups and maintaining a healthy lifestyle.</p>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Confidence Meter -->
+                        <div class="mt-4">
+                            <h5 class="mb-3">Prediction Confidence: {{ confidence }}%</h5>
+                            <div class="progress" style="height: 30px;">
+                                <div class="progress-bar {% if has_heart_disease %}bg-danger{% else %}bg-success{% endif %}" 
+                                     role="progressbar" 
+                                     style="width: {{ confidence }}%" 
+                                     aria-valuenow="{{ confidence }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    {{ confidence }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- All Algorithm Results -->
+                    {% if all_results %}
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-bar me-2"></i> Results from All Models
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-4">
+                                {% for model_name, result in all_results.items %}
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="card h-100 border-{% if result.has_disease %}danger{% else %}success{% endif %}">
+                                        <div class="card-header bg-{% if result.has_disease %}danger{% else %}success{% endif %} text-white">
+                                            <h6 class="mb-0">
+                                                <i class="fas {% if model_name == 'Ensemble' %}fa-sitemap{% elif result.has_disease %}fa-exclamation-circle{% else %}fa-check-circle{% endif %} me-2"></i>
+                                                {{ model_name }}
+                                                {% if model_name == primary_model %}
+                                                <span class="badge bg-warning text-dark ms-2">Primary</span>
+                                                {% endif %}
+                                            </h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                                <span class="fw-bold">Prediction:</span>
+                                                <span class="badge bg-{% if result.has_disease %}danger{% else %}success{% endif %}">
+                                                    {% if result.has_disease %}
+                                                    High Risk
+                                                    {% else %}
+                                                    Low Risk
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="mb-2">
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <span class="text-muted small">Confidence:</span>
+                                                    <span class="fw-bold">{{ result.confidence|floatformat:2 }}%</span>
+                                                </div>
+                                                <div class="progress" style="height: 8px;">
+                                                    <div class="progress-bar bg-{% if result.has_disease %}danger{% else %}success{% endif %}"
+                                                         role="progressbar"
+                                                         style="width: {{ result.confidence }}%"
+                                                         aria-valuenow="{{ result.confidence }}"
+                                                         aria-valuemin="0"
+                                                         aria-valuemax="100">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between small">
+                                                <span class="text-muted">Probability of Heart Disease:</span>
+                                                <span class="fw-bold">
+                                                    {% if result.has_disease %}
+                                                        {{ result.probability|floatformat:4 }}
+                                                    {% else %}
+                                                        {{ result.probability|floatformat:4 }}
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Input Data Summary -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-info-circle me-2"></i> Your Input Data
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <tbody>
+                                        {% for field, value in input_data.items %}
+                                        <tr>
+                                            <th scope="row" class="w-50">{{ field }}</th>
+                                            <td>{{ value }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recommended Actions -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-heartbeat me-2"></i> Recommended Next Steps
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            {% if has_heart_disease %}
+                            <div class="alert alert-warning" role="alert">
+                                <h5><i class="fas fa-exclamation-triangle me-2"></i>Important Notice</h5>
+                                <p class="mb-0">This prediction indicates a potential risk of heart disease. Please consult with a healthcare professional for a comprehensive evaluation.</p>
+                            </div>
+                            {% endif %}
+                            
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">
+                                                <i class="fas fa-user-md me-2"></i>Medical Consultation
+                                            </h5>
+                                            <ul class="list-unstyled">
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Schedule an appointment with your doctor</li>
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Share these results with your healthcare provider</li>
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Discuss any symptoms or concerns</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100 border-0 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">
+                                                <i class="fas fa-heartbeat me-2"></i>Lifestyle Recommendations
+                                            </h5>
+                                            <ul class="list-unstyled">
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Maintain a balanced diet</li>
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Exercise regularly (30 mins/day)</li>
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Avoid smoking and limit alcohol</li>
+                                                <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Manage stress levels</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                        <a href="{% url 'history' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-history me-1"></i> View Prediction History
+                        </a>
+                        <div>
+                            <a href="{% url 'predict' %}" class="btn btn-primary">
+                                <i class="fas fa-redo me-1"></i> Make Another Prediction
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .progress-bar {
+        font-weight: 600;
+        transition: width 1s ease-in-out;
+    }
+    .card {
+        border-radius: 10px;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    .alert {
+        border-radius: 10px;
+    }
+    .table th {
+        background-color: #f8f9fa;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Animate progress bar on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const progressBar = document.querySelector('.progress-bar');
+        progressBar.style.width = '0%';
+        setTimeout(() => {
+            progressBar.style.width = '{{ confidence }}%';
+        }, 100);
+    });
+</script>
+{% endblock %}

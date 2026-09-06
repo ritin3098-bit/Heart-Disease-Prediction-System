@@ -1,0 +1,409 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load math_filters %}
+
+{% block title %}Model Training Results - Heart Disease Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <div class="card border-0 shadow-lg mb-4">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 mb-0">
+                            <i class="fas fa-chart-line me-2"></i> Model Training Results
+                        </h2>
+                        <a href="{% url 'home' %}" class="btn btn-light btn-sm">
+                            <i class="fas fa-home me-1"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-success" role="alert">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-check-circle fa-2x me-3"></i>
+                            <div>
+                                <h5 class="alert-heading mb-1">Training Completed Successfully!</h5>
+                                <p class="mb-0">All machine learning models have been trained and evaluated. Below are the performance metrics for each algorithm.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Summary Cards -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-trophy fa-3x text-warning mb-3"></i>
+                                    <h5 class="text-primary">Best Performing Model</h5>
+                                    <h3 class="text-dark">{{ best_model.0 }}</h3>
+                                    <div class="display-4 text-success">{{ best_model.1.accuracy|floatformat:2|mul:100 }}%</div>
+                                    <p class="text-muted">Accuracy Score</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                                    <h5 class="text-primary">Average Accuracy</h5>
+                                    <div class="display-4 text-primary">{{ avg_accuracy|floatformat:2|mul:100 }}%</div>
+                                    <p class="text-muted">Across all models</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card h-100 border-0 shadow-sm">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-clock fa-3x text-success mb-3"></i>
+                                    <h5 class="text-primary">Training Time</h5>
+                                    <div class="display-4 text-dark">{{ total_training_time|floatformat:2 }}s</div>
+                                    <p class="text-muted">Total training duration</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Model Comparison Chart -->
+                    <div class="card border-0 shadow-sm mb-4">
+                        <div class="card-header bg-light">
+                            <h5 class="mb-0">
+                                <i class="fas fa-chart-pie me-2"></i> Model Performance Comparison
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container" style="position: relative; height:400px;">
+                                <canvas id="accuracyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Results Table -->
+                    <div class="card border-0 shadow-sm">
+                        <div class="card-header bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0">
+                                    <i class="fas fa-table me-2"></i> Detailed Results
+                                </h5>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-sort me-1"></i> Sort By
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="sortDropdown">
+                                        <li><a class="dropdown-item sort-btn" href="#" data-sort="name">Name (A-Z)</a></li>
+                                        <li><a class="dropdown-item sort-btn" href="#" data-sort="accuracy">Accuracy (High-Low)</a></li>
+                                        <li><a class="dropdown-item sort-btn" href="#" data-sort="f1">F1 Score (High-Low)</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0" id="resultsTable">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Algorithm</th>
+                                        <th>Accuracy</th>
+                                        <th>Precision</th>
+                                        <th>Recall</th>
+                                        <th>F1 Score</th>
+                                        <th>Training Time</th>
+                                        <th>Performance</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for model, data in results.items %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ model }}</strong>
+                                            {% if model == best_model.0 %}
+                                                <span class="badge bg-success ms-2">Best</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ data.accuracy|floatformat:4 }}</td>
+                                        <td>{{ data.precision|default:"-"|floatformat:4 }}</td>
+                                        <td>{{ data.recall|default:"-"|floatformat:4 }}</td>
+                                        <td>{{ data.f1|default:"-"|floatformat:4 }}</td>
+                                        <td>{{ data.training_time|default:"-"|floatformat:4 }}s</td>
+                                        <td>
+                                            <div class="progress" style="height: 20px;">
+                                                <div class="progress-bar {% if data.accuracy > 0.85 %}bg-success{% elif data.accuracy > 0.7 %}bg-warning{% else %}bg-danger{% endif %}"
+                                                    role="progressbar" 
+                                                    style="width: {{ data.accuracy|mul:100 }}%"
+                                                    aria-valuenow="{{ data.accuracy|mul:100 }}" 
+                                                    aria-valuemin="0" 
+                                                    aria-valuemax="100">
+                                                    {{ data.accuracy|mul:100|floatformat:1 }}%
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between mt-4 pt-3 border-top">
+                        <a href="{% url 'train_models' %}" class="btn btn-outline-primary">
+                            <i class="fas fa-sync-alt me-1"></i> Retrain Models
+                        </a>
+                        <div>
+                            <a href="{% url 'predict' %}" class="btn btn-primary">
+                                <i class="fas fa-play me-1"></i> Start Making Predictions
+                            </a>
+                            <button type="button" class="btn btn-outline-secondary ms-2" data-bs-toggle="modal" data-bs-target="#exportModal">
+                                <i class="fas fa-download me-1"></i> Export Results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exportModalLabel">Export Results</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Select the format you want to export the results in:</p>
+                <div class="d-grid gap-2">
+                    <button type="button" class="btn btn-outline-primary text-start" id="exportCSV">
+                        <i class="fas fa-file-csv me-2"></i> CSV (Comma Separated Values)
+                    </button>
+                    <button type="button" class="btn btn-outline-primary text-start" id="exportJSON">
+                        <i class="fas fa-file-code me-2"></i> JSON (JavaScript Object Notation)
+                    </button>
+                    <button type="button" class="btn btn-outline-primary text-start" id="exportExcel">
+                        <i class="fas fa-file-excel me-2"></i> Excel Spreadsheet
+                    </button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        height: 1.5rem;
+    }
+    
+    .progress-bar {
+        transition: width 0.6s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+    
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 0.5px;
+    }
+    
+    .badge {
+        font-size: 0.65em;
+        padding: 0.35em 0.65em;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Chart.js with enhanced options
+    const ctx = document.getElementById('accuracyChart').getContext('2d');
+    const results = {{ results|safe }};
+    const modelNames = Object.keys(results);
+    
+    // Prepare data for chart
+    const chartData = {
+        labels: modelNames,
+        datasets: [{
+            label: 'Accuracy',
+            data: modelNames.map(model => results[model].accuracy),
+            backgroundColor: modelNames.map(model => 
+                results[model].accuracy === Math.max(...Object.values(results).map(r => r.accuracy)) 
+                    ? 'rgba(40, 167, 69, 0.8)'  // Green for best model
+                    : 'rgba(13, 110, 253, 0.6)' // Blue for others
+            ),
+            borderColor: modelNames.map(model => 
+                results[model].accuracy === Math.max(...Object.values(results).map(r => r.accuracy))
+                    ? 'rgba(40, 167, 69, 1)'
+                    : 'rgba(13, 110, 253, 1)'
+            ),
+            borderWidth: 1,
+            borderRadius: 4,
+            barPercentage: 0.8,
+            categoryPercentage: 0.8
+        }]
+    };
+
+    // Create chart with enhanced options
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: chartData,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Accuracy: ${(context.raw * 100).toFixed(2)}%`;
+                        }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Model Accuracy Comparison',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        bottom: 20
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 1,
+                    ticks: {
+                        callback: function(value) {
+                            return (value * 100) + '%';
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Accuracy Score',
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            animation: {
+                duration: 1500,
+                easing: 'easeInOutQuart'
+            }
+        }
+    });
+
+    // Add sorting functionality to the table
+    const sortButtons = document.querySelectorAll('.sort-btn');
+    sortButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            const sortBy = this.getAttribute('data-sort');
+            sortTable(sortBy);
+        });
+    });
+
+    function sortTable(sortBy) {
+        const table = document.getElementById('resultsTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+
+        rows.sort((a, b) => {
+            let aValue, bValue;
+
+            if (sortBy === 'name') {
+                aValue = a.cells[0].textContent.trim();
+                bValue = b.cells[0].textContent.trim();
+                return aValue.localeCompare(bValue);
+            } else if (sortBy === 'accuracy') {
+                aValue = parseFloat(a.cells[1].textContent);
+                bValue = parseFloat(b.cells[1].textContent);
+                return bValue - aValue;
+            } else if (sortBy === 'f1') {
+                aValue = parseFloat(a.cells[4].textContent) || 0;
+                bValue = parseFloat(b.cells[4].textContent) || 0;
+                return bValue - aValue;
+            }
+            return 0;
+        });
+
+        // Remove all rows
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+
+        // Add sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // Initialize with accuracy sort
+    sortTable('accuracy');
+
+    // Export functionality
+    document.getElementById('exportCSV').addEventListener('click', function() {
+        exportToCSV();
+        bootstrap.Modal.getInstance(document.getElementById('exportModal')).hide();
+    });
+
+    document.getElementById('exportJSON').addEventListener('click', function() {
+        exportToJSON();
+        bootstrap.Modal.getInstance(document.getElementById('exportModal')).hide();
+    });
+
+    document.getElementById('exportExcel').addEventListener('click', function() {
+        exportToExcel();
+        bootstrap.Modal.getInstance(document.getElementById('exportModal')).hide();
+    });
+
+    function exportToCSV() {
+        // Implementation for CSV export
+        alert('Exporting to CSV...');
+    }
+
+    function exportToJSON() {
+        // Implementation for JSON export
+        alert('Exporting to JSON...');
+    }
+
+    function exportToExcel() {
+        // Implementation for Excel export
+        alert('Exporting to Excel...');
+    }
+});
+</script>
+{% endblock %}

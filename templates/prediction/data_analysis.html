@@ -1,0 +1,283 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Data Analysis - Heart Disease Prediction{% endblock %}
+
+{% block extra_css %}
+<style>
+    .analysis-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 40px;
+    }
+    
+    .stat-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        transition: transform 0.3s ease;
+    }
+    
+    .stat-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .stat-card h3 {
+        margin: 0;
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+    
+    .stat-card p {
+        margin: 10px 0 0 0;
+        font-size: 1.1rem;
+        opacity: 0.9;
+    }
+    
+    .stat-card.green {
+        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    
+    .stat-card.red {
+        background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+    }
+    
+    .section-header {
+        margin: 50px 0 30px 0;
+        padding-bottom: 15px;
+        border-bottom: 3px solid #667eea;
+    }
+    
+    .section-header h2 {
+        color: #2d3748;
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    
+    .plot-container {
+        background: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .plot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .confusion-matrix-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .error-container {
+        background: #fff3cd;
+        border: 2px solid #ffc107;
+        border-radius: 10px;
+        padding: 30px;
+        text-align: center;
+        margin: 50px 0;
+    }
+    
+    .error-container i {
+        font-size: 4rem;
+        color: #ff6b6b;
+        margin-bottom: 20px;
+    }
+    
+    @media (max-width: 768px) {
+        .plot-grid,
+        .confusion-matrix-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="analysis-container">
+    <h1 class="text-center mb-4" style="color: #2d3748; font-weight: bold;">
+        <i class="fas fa-chart-line"></i> Heart Disease Data Analysis
+    </h1>
+    
+    {% if error %}
+    <div class="error-container">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>{{ error }}</h3>
+        {% if show_upload_help %}
+        <p class="mt-3">Please ensure your dataset is uploaded and accessible.</p>
+        {% endif %}
+    </div>
+    {% else %}
+    
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h3>{{ total_patients }}</h3>
+            <p><i class="fas fa-users"></i> Total Patients</p>
+        </div>
+        <div class="stat-card green">
+            <h3>{{ no_heart_disease_count }}</h3>
+            <p><i class="fas fa-heart"></i> No Heart Disease</p>
+        </div>
+        <div class="stat-card red">
+            <h3>{{ heart_disease_count }}</h3>
+            <p><i class="fas fa-heartbeat"></i> Heart Disease</p>
+        </div>
+    </div>
+    
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i> {{ dataset_info }}
+    </div>
+    
+    <!-- Distribution Analysis -->
+    <div class="section-header">
+        <h2><i class="fas fa-chart-pie"></i> Distribution Analysis</h2>
+    </div>
+    
+    <div class="plot-grid">
+        <div class="plot-container">
+            {{ target_dist_plot|safe }}
+        </div>
+        <div class="plot-container">
+            {{ age_dist_plot|safe }}
+        </div>
+    </div>
+    
+    <!-- Box Plots -->
+    <div class="section-header">
+        <h2><i class="fas fa-box"></i> Feature Distributions</h2>
+    </div>
+    
+    <div class="plot-grid">
+        {% if age_box_plot %}
+        <div class="plot-container">
+            {{ age_box_plot|safe }}
+        </div>
+        {% endif %}
+        
+        {% if bp_plot %}
+        <div class="plot-container">
+            {{ bp_plot|safe }}
+        </div>
+        {% endif %}
+        
+        {% if chol_dist_plot %}
+        <div class="plot-container">
+            {{ chol_dist_plot|safe }}
+        </div>
+        {% endif %}
+        
+        {% if hr_plot %}
+        <div class="plot-container">
+            {{ hr_plot|safe }}
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Categorical Features -->
+    {% if sex_plot or cp_plot %}
+    <div class="section-header">
+        <h2><i class="fas fa-layer-group"></i> Categorical Analysis</h2>
+    </div>
+    
+    <div class="plot-grid">
+        {% if sex_plot %}
+        <div class="plot-container">
+            {{ sex_plot|safe }}
+        </div>
+        {% endif %}
+        
+        {% if cp_plot %}
+        <div class="plot-container">
+            {{ cp_plot|safe }}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+    
+    <!-- Correlation Matrix -->
+    <div class="section-header">
+        <h2><i class="fas fa-project-diagram"></i> Feature Correlations</h2>
+    </div>
+    
+    <div class="plot-container">
+        {{ corr_plot|safe }}
+    </div>
+    
+    <!-- Model Performance -->
+    {% if confusion_matrices %}
+    <div class="section-header">
+        <h2><i class="fas fa-robot"></i> Model Performance</h2>
+    </div>
+    
+    <div class="plot-container mb-4">
+        {{ comparison_plot|safe }}
+    </div>
+    
+    <div class="section-header">
+        <h2><i class="fas fa-table"></i> Confusion Matrices</h2>
+    </div>
+    
+    <div class="confusion-matrix-grid">
+        {% for cm in confusion_matrices %}
+        <div class="plot-container">
+            <h4 class="text-center mb-3">{{ cm.name }}</h4>
+            {{ cm.plot|safe }}
+            <div class="text-center mt-3">
+                <span class="badge badge-primary" style="font-size: 1.1rem; padding: 10px 20px;">
+                    Accuracy: {{ cm.accuracy|floatformat:2 }}%
+                </span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Export Options -->
+    <div class="text-center mt-5 mb-4">
+        <button class="btn btn-primary btn-lg" onclick="window.print()">
+            <i class="fas fa-download"></i> Export as PDF
+        </button>
+        <a href="{% url 'predict' %}" class="btn btn-success btn-lg ml-2">
+            <i class="fas fa-heartbeat"></i> Make Prediction
+        </a>
+    </div>
+    
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add any interactive features here
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('Data Analysis page loaded');
+        
+        // Smooth scroll to sections
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

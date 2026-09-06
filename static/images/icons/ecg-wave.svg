@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" width="1000" height="300">
+    <defs>
+        <linearGradient id="ecgGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#48bb78;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#38a169;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#2f855a;stop-opacity:1" />
+        </linearGradient>
+        <filter id="ecgGlow">
+            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <!-- Grid Background -->
+    <rect width="1000" height="300" fill="#f8f9fa"/>
+    <defs>
+        <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="0.5"/>
+        </pattern>
+    </defs>
+    <rect width="1000" height="300" fill="url(#grid)"/>
+    
+    <!-- ECG Line -->
+    <polyline fill="none" stroke="url(#ecgGradient)" stroke-width="4" filter="url(#ecgGlow)" stroke-linecap="round" stroke-linejoin="round"
+              points="0,150 80,150 90,130 100,170 110,150 180,150 190,110 200,190 210,150 280,150 290,130 300,170 310,150 380,150 390,110 400,190 410,150 480,150 490,130 500,170 510,150 580,150 590,110 600,190 610,150 680,150 690,130 700,170 710,150 780,150 790,110 800,190 810,150 880,150 890,130 900,170 910,150 1000,150">
+        <animate attributeName="stroke-dasharray" from="0 2000" to="2000 2000" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="stroke-dashoffset" from="2000" to="0" dur="3s" repeatCount="indefinite"/>
+    </polyline>
+</svg>

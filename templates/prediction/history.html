@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Prediction History - Heart Disease Prediction System{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0"><i class="fas fa-history me-2"></i>Prediction History</h2>
+                </div>
+                <div class="card-body">
+                    {% if has_history %}
+                        <!-- Table to display prediction history -->
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Prediction</th>
+                                        <th>Confidence</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for prediction in predictions %}
+                                    <tr>
+                                        <td>{{ prediction.date|date:"M d, Y H:i" }}</td>
+                                        <td>
+                                            <span class="badge {% if prediction.result == 'Positive' %}bg-danger{% else %}bg-success{% endif %}">
+                                                {{ prediction.result }}
+                                            </span>
+                                        </td>
+                                        <td>{{ prediction.confidence }}%</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detailsModal{{ forloop.counter }}">
+                                                <i class="fas fa-eye me-1"></i> View
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5">
+                            <i class="fas fa-history fa-4x text-muted mb-4"></i>
+                            <h4>No prediction history found</h4>
+                            <p class="text-muted">Your prediction history will appear here after you make some predictions.</p>
+                            <a href="{% url 'predict' %}" class="btn btn-primary mt-3">
+                                <i class="fas fa-heartbeat me-2"></i>Make a Prediction
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for prediction details -->
+{% for prediction in predictions %}
+<div class="modal fade" id="detailsModal{{ forloop.counter }}" tabindex="-1" aria-labelledby="detailsModalLabel{{ forloop.counter }}" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detailsModalLabel{{ forloop.counter }}">Prediction Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                {% if prediction.details %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Input Parameters:</h6>
+                            <ul class="list-group list-group-flush">
+                                {% for key, value in prediction.details.items %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        <strong>{{ key|title }}:</strong>
+                                        <span>{{ value }}</span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>Additional Information:</h6>
+                            <div class="card">
+                                <div class="card-body">
+                                    <p>Prediction made on: {{ prediction.date|date:"F j, Y \a\t g:i A" }}</p>
+                                    <p>Confidence: {{ prediction.confidence }}%</p>
+                                    {% if prediction.notes %}
+                                        <div class="alert alert-info mt-3">
+                                            <strong>Notes:</strong> {{ prediction.notes }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p>No detailed information available for this prediction.</p>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}

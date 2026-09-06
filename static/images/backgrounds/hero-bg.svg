@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="none">
+    <defs>
+        <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:0.9" />
+            <stop offset="100%" style="stop-color:#f093fb;stop-opacity:0.8" />
+        </linearGradient>
+    </defs>
+    <rect width="1440" height="800" fill="url(#heroGrad)"/>
+    <!-- Animated waves -->
+    <path fill="rgba(255,255,255,0.1)" d="M0,400 C320,300 420,500 720,450 C1020,400 1120,350 1440,400 L1440,800 L0,800 Z">
+        <animate attributeName="d" 
+                 values="M0,400 C320,300 420,500 720,450 C1020,400 1120,350 1440,400 L1440,800 L0,800 Z;
+                         M0,450 C320,350 420,550 720,500 C1020,450 1120,400 1440,450 L1440,800 L0,800 Z;
+                         M0,400 C320,300 420,500 720,450 C1020,400 1120,350 1440,400 L1440,800 L0,800 Z"
+                 dur="10s" repeatCount="indefinite"/>
+    </path>
+    <path fill="rgba(255,255,255,0.05)" d="M0,500 C360,400 480,600 720,550 C960,500 1080,450 1440,500 L1440,800 L0,800 Z">
+        <animate attributeName="d" 
+                 values="M0,500 C360,400 480,600 720,550 C960,500 1080,450 1440,500 L1440,800 L0,800 Z;
+                         M0,550 C360,450 480,650 720,600 C960,550 1080,500 1440,550 L1440,800 L0,800 Z;
+                         M0,500 C360,400 480,600 720,550 C960,500 1080,450 1440,500 L1440,800 L0,800 Z"
+                 dur="15s" repeatCount="indefinite"/>
+    </path>
+</svg>

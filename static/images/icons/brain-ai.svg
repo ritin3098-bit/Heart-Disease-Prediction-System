@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="180" height="180">
+    <defs>
+        <linearGradient id="brainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#9f7aea;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#805ad5;stop-opacity:1" />
+        </linearGradient>
+        <radialGradient id="aiGlow">
+            <stop offset="0%" style="stop-color:#fff;stop-opacity:0.8" />
+            <stop offset="100%" style="stop-color:#9f7aea;stop-opacity:0" />
+        </radialGradient>
+    </defs>
+    <path fill="url(#brainGrad)"
+          d="M544 256c0-88.4-71.6-160-160-160H240c-26.5 0-48 21.5-48 48v16c0 17.7-14.3 32-32 32s-32-14.3-32-32V96c0-53 43-96 96-96h144c123.7 0 224 100.3 224 224v32c0 53-43 96-96 96h-16c-17.7 0-32-14.3-32-32s14.3-32 32-32h16c26.5 0 48-21.5 48-48v-32c0-88.4-71.6-160-160-160H240c-26.5 0-48 21.5-48 48v16c0 44.2 35.8 80 80 80s80-35.8 80-80V96h32c61.9 0 112 50.1 112 112v48c0 44.2-35.8 80-80 80h-16c-44.2 0-80 35.8-80 80s35.8 80 80 80h16c88.4 0 160-71.6 160-160v-32z"/>
+    <!-- Neural network nodes -->
+    <circle cx="256" cy="180" r="12" fill="#fff" opacity="0.8"/>
+    <circle cx="300" cy="220" r="12" fill="#fff" opacity="0.8"/>
+    <circle cx="256" cy="260" r="12" fill="#fff" opacity="0.8"/>
+    <circle cx="212" cy="220" r="12" fill="#fff" opacity="0.8"/>
+    <!-- Connections -->
+    <line x1="256" y1="180" x2="300" y2="220" stroke="#fff" stroke-width="2" opacity="0.5"/>
+    <line x1="256" y1="180" x2="212" y2="220" stroke="#fff" stroke-width="2" opacity="0.5"/>
+    <line x1="300" y1="220" x2="256" y2="260" stroke="#fff" stroke-width="2" opacity="0.5"/>
+    <line x1="212" y1="220" x2="256" y2="260" stroke="#fff" stroke-width="2" opacity="0.5"/>
+    <!-- Glow effect -->
+    <circle cx="256" cy="220" r="80" fill="url(#aiGlow)" opacity="0.3"/>
+</svg>

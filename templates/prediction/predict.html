@@ -1,0 +1,342 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Predict Heart Disease - Heart Disease Prediction System{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-primary text-white py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 mb-0">
+                            <i class="fas fa-heartbeat me-2"></i> Heart Disease Prediction
+                        </h2>
+                        <a href="{% url 'home' %}" class="btn btn-light btn-sm">
+                            <i class="fas fa-arrow-left me-1"></i> Back to Home
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="alert alert-info" role="alert">
+                        <i class="fas fa-info-circle me-2"></i> 
+                        Please fill in all the required fields to get an accurate prediction.
+                    </div>
+
+                    <form method="post" id="predictionForm" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <!-- Personal Information -->
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-user me-2"></i>Personal Information
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="{{ form.age.id_for_label }}" class="form-label">
+                                        {{ form.age.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.age }}
+                                        <span class="input-group-text">years</span>
+                                    </div>
+                                    {% if form.age.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.age.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Enter age in years (29-77)</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.sex.id_for_label }}" class="form-label">
+                                        {{ form.sex.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.sex }}
+                                    {% if form.sex.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.sex.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical Information -->
+                        <div class="mb-4">
+                            <h5 class="border-bottom pb-2 mb-3">
+                                <i class="fas fa-heartbeat me-2"></i>Medical Information
+                            </h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="{{ form.cp.id_for_label }}" class="form-label">
+                                        {{ form.cp.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.cp }}
+                                    {% if form.cp.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.cp.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.trestbps.id_for_label }}" class="form-label">
+                                        {{ form.trestbps.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.trestbps }}
+                                        <span class="input-group-text">mm Hg</span>
+                                    </div>
+                                    {% if form.trestbps.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.trestbps.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Resting blood pressure (94-200 mm Hg)</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.chol.id_for_label }}" class="form-label">
+                                        {{ form.chol.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.chol }}
+                                        <span class="input-group-text">mg/dl</span>
+                                    </div>
+                                    {% if form.chol.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.chol.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Serum cholesterol (126-564 mg/dl)</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.fbs.id_for_label }}" class="form-label">
+                                        {{ form.fbs.label }}
+                                    </label>
+                                    {{ form.fbs }}
+                                    {% if form.fbs.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.fbs.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Fasting blood sugar > 120 mg/dl</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.restecg.id_for_label }}" class="form-label">
+                                        {{ form.restecg.label }}
+                                    </label>
+                                    {{ form.restecg }}
+                                    {% if form.restecg.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.restecg.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.thalach.id_for_label }}" class="form-label">
+                                        {{ form.thalach.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.thalach }}
+                                        <span class="input-group-text">bpm</span>
+                                    </div>
+                                    {% if form.thalach.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.thalach.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Maximum heart rate achieved (71-202 bpm)</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.exang.id_for_label }}" class="form-label">
+                                        {{ form.exang.label }}
+                                    </label>
+                                    {{ form.exang }}
+                                    {% if form.exang.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.exang.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Exercise induced angina</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.oldpeak.id_for_label }}" class="form-label">
+                                        {{ form.oldpeak.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        {{ form.oldpeak }}
+                                        <span class="input-group-text">mm</span>
+                                    </div>
+                                    {% if form.oldpeak.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.oldpeak.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">ST depression induced by exercise (0-6.2 mm)</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.slope.id_for_label }}" class="form-label">
+                                        {{ form.slope.label }}
+                                    </label>
+                                    {{ form.slope }}
+                                    {% if form.slope.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.slope.errors }}</div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.ca.id_for_label }}" class="form-label">
+                                        {{ form.ca.label }}
+                                    </label>
+                                    {{ form.ca }}
+                                    {% if form.ca.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.ca.errors }}</div>
+                                    {% endif %}
+                                    <small class="text-muted">Number of major vessels (0-3)</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="{{ form.thal.id_for_label }}" class="form-label">
+                                        {{ form.thal.label }}
+                                    </label>
+                                    {{ form.thal }}
+                                    {% if form.thal.errors %}
+                                        <div class="invalid-feedback d-block">{{ form.thal.errors }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4 pt-3 border-top">
+                            <button type="reset" class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-undo me-1"></i> Reset Form
+                            </button>
+                            <button type="submit" class="btn btn-primary" id="submitBtn">
+                                <i class="fas fa-brain me-1"></i> Predict Heart Disease
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Parameter Information Card -->
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Parameter Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <h6 class="text-primary border-bottom pb-2">Patient Information</h6>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-5">Age</dt>
+                                <dd class="col-sm-7">Age in years</dd>
+                                
+                                <dt class="col-sm-5">Sex</dt>
+                                <dd class="col-sm-7">Gender (1 = male, 0 = female)</dd>
+                                
+                                <dt class="col-sm-5">Chest Pain (CP)</dt>
+                                <dd class="col-sm-7">Type of chest pain (1-4)</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary border-bottom pb-2">Vital Signs</h6>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-5">Trestbps</dt>
+                                <dd class="col-sm-7">Resting blood pressure (mm Hg)</dd>
+                                
+                                <dt class="col-sm-5">Cholesterol</dt>
+                                <dd class="col-sm-7">Serum cholesterol (mg/dl)</dd>
+                                
+                                <dt class="col-sm-5">FBS</dt>
+                                <dd class="col-sm-7">Fasting blood sugar > 120 mg/dl (1 = true, 0 = false)</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary border-bottom pb-2">Heart Test Results</h6>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-5">Resting ECG</dt>
+                                <dd class="col-sm-7">Resting electrocardiographic results (0-2)</dd>
+                                
+                                <dt class="col-sm-5">Thalach</dt>
+                                <dd class="col-sm-7">Maximum heart rate achieved (bpm)</dd>
+                                
+                                <dt class="col-sm-5">Exang</dt>
+                                <dd class="col-sm-7">Exercise induced angina (1 = yes, 0 = no)</dd>
+                                
+                                <dt class="col-sm-5">Oldpeak</dt>
+                                <dd class="col-sm-7">ST depression induced by exercise relative to rest</dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary border-bottom pb-2">Advanced Parameters</h6>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-5">Slope</dt>
+                                <dd class="col-sm-7">Slope of the peak exercise ST segment (1-3)</dd>
+                                
+                                <dt class="col-sm-5">CA</dt>
+                                <dd class="col-sm-7">Number of major vessels (0-3) colored by flourosopy</dd>
+                                
+                                <dt class="col-sm-5">Thal</dt>
+                                <dd class="col-sm-7">Thalassemia type (3 = normal, 6 = fixed defect, 7 = reversible defect)</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-control:focus, .form-select:focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+    
+    .form-label.required:after {
+        content: " *";
+        color: #dc3545;
+    }
+    
+    .card {
+        border-radius: 0.5rem;
+        overflow: hidden;
+    }
+    
+    .card-header {
+        font-weight: 600;
+    }
+    
+    .input-group-text {
+        background-color: #f8f9fa;
+    }
+    
+    .nav-tabs .nav-link {
+        color: #495057;
+        font-weight: 500;
+    }
+    
+    .nav-tabs .nav-link.active {
+        font-weight: 600;
+        border-bottom: 3px solid #0d6efd;
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('predictionForm');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    // Form validation
+    form.addEventListener('submit', function(e) {
+        if (!form.checkValidity()) {
+            e.preventDefault();
+            e.stopPropagation();
+        } else {
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Processing...';
+        }
+        form.classList.add('was-validated');
+    }, false);
+
+    // Reset form validation on reset
+    form.addEventListener('reset', function() {
+        form.classList.remove('was-validated');
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-brain me-1"></i> Predict Heart Disease';
+    });
+
+    // Add tooltips to form labels
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+});
+</script>
+{% endblock %}

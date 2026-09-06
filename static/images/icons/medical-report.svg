@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="150" height="150">
+    <defs>
+        <linearGradient id="reportGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#ed8936;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#dd6b20;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <path fill="url(#reportGrad)" 
+          d="M224 136V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm64 236c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-64c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12v8zm0-72v8c0 6.6-5.4 12-12 12H108c-6.6 0-12-5.4-12-12v-8c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm96-114.1v6.1H256V0h6.1c6.4 0 12.5 2.5 17 7l97.9 98c4.5 4.5 7 10.6 7 16.9z"/>
+    <!-- Plus sign -->
+    <circle cx="80" cy="420" r="25" fill="#dc3545"/>
+    <path d="M80 405 L80 435 M65 420 L95 420" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+</svg>

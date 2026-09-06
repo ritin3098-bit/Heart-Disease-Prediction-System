@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="400" height="400">
+    <defs>
+        <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#fcc9b9;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#fcb69f;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="coatGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#f0f0f0;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    
+    <!-- Body - White coat -->
+    <path fill="url(#coatGrad)" d="M250,250 L200,500 L300,500 L250,250 Z"/>
+    <rect x="180" y="250" width="140" height="250" rx="10" fill="url(#coatGrad)"/>
+    
+    <!-- Arms -->
+    <ellipse cx="160" cy="320" rx="30" ry="80" fill="url(#coatGrad)"/>
+    <ellipse cx="340" cy="320" rx="30" ry="80" fill="url(#coatGrad)"/>
+    
+    <!-- Hands -->
+    <circle cx="160" cy="400" r="25" fill="url(#skinGrad)"/>
+    <circle cx="340" cy="400" r="25" fill="url(#skinGrad)"/>
+    
+    <!-- Head -->
+    <circle cx="250" cy="150" r="60" fill="url(#skinGrad)"/>
+    
+    <!-- Hair -->
+    <path fill="#4a5568" d="M250,90 Q210,80 190,110 Q185,130 190,145 L310,145 Q315,130 310,110 Q290,80 250,90 Z"/>
+    
+    <!-- Face features -->
+    <circle cx="230" cy="145" r="5" fill="#2d3748"/>
+    <circle cx="270" cy="145" r="5" fill="#2d3748"/>
+    <path d="M240,165 Q250,170 260,165" stroke="#2d3748" stroke-width="2" fill="none"/>
+    
+    <!-- Stethoscope -->
+    <circle cx="250" cy="220" r="15" fill="#667eea"/>
+    <path d="M250,235 Q230,280 220,320" stroke="#667eea" stroke-width="8" fill="none"/>
+    <circle cx="220" cy="330" r="20" fill="#667eea" opacity="0.8"/>
+    
+    <!-- Medical cross on coat -->
+    <rect x="235" y="280" width="30" height="10" fill="#dc3545"/>
+    <rect x="245" y="270" width="10" height="30" fill="#dc3545"/>
+</svg>

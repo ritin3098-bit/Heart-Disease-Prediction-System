@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+    <defs>
+        <linearGradient id="chartGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#48bb78;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#38a169;stop-opacity:1" />
+        </linearGradient>
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#f7fafc;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#edf2f7;stop-opacity:1" />
+        </linearGradient>
+        <filter id="shadow">
+            <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+        </filter>
+    </defs>
+    
+    <!-- Background -->
+    <rect width="600" height="400" fill="url(#bgGrad)" rx="15"/>
+    
+    <!-- Title -->
+    <text x="300" y="30" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2d3748" text-anchor="middle">
+        Heart Disease Analytics
+    </text>
+    
+    <!-- Chart bars with labels -->
+    <g id="barChart">
+        <rect x="50" y="250" width="60" height="100" fill="url(#chartGrad)" rx="5" filter="url(#shadow)">
+            <animate attributeName="height" values="50;100;50" dur="2s" repeatCount="indefinite"/>
+            <animate attributeName="y" values="300;250;300" dur="2s" repeatCount="indefinite"/>
+        </rect>
+        <text x="80" y="370" font-family="Arial" font-size="12" fill="#4a5568" text-anchor="middle">LR</text>
+        
+        <rect x="140" y="200" width="60" height="150" fill="url(#chartGrad)" rx="5" opacity="0.8" filter="url(#shadow)">
+            <animate attributeName="height" values="100;150;100" dur="2.5s" repeatCount="indefinite"/>
+            <animate attributeName="y" values="250;200;250" dur="2.5s" repeatCount="indefinite"/>
+        </rect>
+        <text x="170" y="370" font-family="Arial" font-size="12" fill="#4a5568" text-anchor="middle">RF</text>
+        
+        <rect x="230" y="220" width="60" height="130" fill="url(#chartGrad)" rx="5" opacity="0.9" filter="url(#shadow)">
+            <animate attributeName="height" values="80;130;80" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="y" values="270;220;270" dur="3s" repeatCount="indefinite"/>
+        </rect>
+        <text x="260" y="370" font-family="Arial" font-size="12" fill="#4a5568" text-anchor="middle">SVM</text>
+        
+        <rect x="320" y="180" width="60" height="170" fill="url(#chartGrad)" rx="5" filter="url(#shadow)">
+            <animate attributeName="height" values="120;170;120" dur="2.2s" repeatCount="indefinite"/>
+            <animate attributeName="y" values="230;180;230" dur="2.2s" repeatCount="indefinite"/>
+        </rect>
+        <text x="350" y="370" font-family="Arial" font-size="12" fill="#4a5568" text-anchor="middle">ENS</text>
+    </g>
+    
+    <!-- Axis lines -->
+    <line x1="40" y1="350" x2="390" y2="350" stroke="#cbd5e0" stroke-width="2"/>
+    <line x1="40" y1="350" x2="40" y2="60" stroke="#cbd5e0" stroke-width="2"/>
+    
+    <!-- Y-axis labels -->
+    <text x="25" y="355" font-family="Arial" font-size="10" fill="#718096">0</text>
+    <text x="25" y="275" font-family="Arial" font-size="10" fill="#718096">50</text>
+    <text x="18" y="195" font-family="Arial" font-size="10" fill="#718096">100</text>
+    
+    <!-- ECG Monitor Section -->
+    <rect x="410" y="60" width="180" height="100" fill="#1a202c" rx="8" filter="url(#shadow)"/>
+    
+    <!-- ECG Line Chart -->
+    <polyline fill="none" stroke="#48bb78" stroke-width="3" stroke-linecap="round"
+              points="420,110 435,110 440,95 445,125 450,110 465,110 470,80 475,140 480,110 495,110 500,95 505,125 510,110 525,110 530,95 535,125 540,110 555,110 560,95 565,125 570,110 580,110">
+        <animate attributeName="points" 
+                 values="420,110 435,110 440,95 445,125 450,110 465,110 470,80 475,140 480,110 495,110 500,95 505,125 510,110 525,110 530,95 535,125 540,110 555,110 560,95 565,125 570,110 580,110;
+                         420,110 435,110 440,100 445,120 450,110 465,110 470,85 475,135 480,110 495,110 500,100 505,120 510,110 525,110 530,100 535,120 540,110 555,110 560,100 565,120 570,110 580,110;
+                         420,110 435,110 440,95 445,125 450,110 465,110 470,80 475,140 480,110 495,110 500,95 505,125 510,110 525,110 530,95 535,125 540,110 555,110 560,95 565,125 570,110 580,110"
+                 dur="1.5s" repeatCount="indefinite"/>
+    </polyline>
+    
+    <!-- ECG Grid lines -->
+    <line x1="420" y1="90" x2="580" y2="90" stroke="#2d3748" stroke-width="0.5" opacity="0.3"/>
+    <line x1="420" y1="110" x2="580" y2="110" stroke="#2d3748" stroke-width="0.5" opacity="0.5"/>
+    <line x1="420" y1="130" x2="580" y2="130" stroke="#2d3748" stroke-width="0.5" opacity="0.3"/>
+    
+    <!-- ECG Label -->
+    <text x="500" y="180" font-family="Arial" font-size="11" fill="#4a5568" text-anchor="middle">Heart Rate Monitor</text>
+    
+    <!-- Heart icon with pulse -->
+    <g id="heartIcon">
+        <path fill="#dc3545" d="M540,220 C535,210 525,205 515,210 C510,215 505,215 500,210 C490,205 480,210 475,220 C470,230 480,245 500,260 C520,245 530,230 525,220 Z" filter="url(#shadow)">
+            <animateTransform attributeName="transform" type="scale" 
+                              values="1;1.15;1" dur="1s" repeatCount="indefinite"
+                              additive="sum"/>
+        </path>
+        <circle cx="500" cy="228" r="35" fill="none" stroke="#dc3545" stroke-width="2" opacity="0.3">
+            <animate attributeName="r" values="30;45;30" dur="1s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.3;0;0.3" dur="1s" repeatCount="indefinite"/>
+        </circle>
+    </g>
+    
+    <!-- Health metrics panel -->
+    <rect x="410" y="280" width="180" height="90" fill="white" rx="8" filter="url(#shadow)"/>
+    <text x="500" y="300" font-family="Arial" font-size="12" font-weight="bold" fill="#2d3748" text-anchor="middle">Health Metrics</text>
+    
+    <!-- Metrics values -->
+    <g id="metrics">
+        <circle cx="430" cy="320" r="4" fill="#48bb78"/>
+        <text x="440" y="324" font-family="Arial" font-size="10" fill="#4a5568">BP: 120/80</text>
+        
+        <circle cx="430" cy="340" r="4" fill="#667eea"/>
+        <text x="440" y="344" font-family="Arial" font-size="10" fill="#4a5568">HR: 72 bpm</text>
+        
+        <circle cx="430" cy="360" r="4" fill="#f56565"/>
+        <text x="440" y="364" font-family="Arial" font-size="10" fill="#4a5568">Risk: Low</text>
+    </g>
+    
+    <!-- Floating data points -->
+    <circle cx="450" cy="180" r="8" fill="#667eea" opacity="0.6">
+        <animate attributeName="cy" values="180;170;180" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="480" cy="200" r="6" fill="#48bb78" opacity="0.6">
+        <animate attributeName="cy" values="200;190;200" dur="2.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="510" cy="190" r="7" fill="#f56565" opacity="0.6">
+        <animate attributeName="cy" values="190;180;190" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.9;0.6" dur="3s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="540" cy="185" r="5" fill="#f6ad55" opacity="0.6">
+        <animate attributeName="cy" values="185;175;185" dur="2.8s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.6;0.9;0.6" dur="2.8s" repeatCount="indefinite"/>
+    </circle>
+    
+    <!-- Accuracy indicator -->
+    <g id="accuracy">
+        <rect x="50" y="60" width="150" height="60" fill="white" rx="8" filter="url(#shadow)"/>
+        <text x="125" y="82" font-family="Arial" font-size="12" font-weight="bold" fill="#2d3748" text-anchor="middle">Model Accuracy</text>
+        <text x="125" y="105" font-family="Arial" font-size="20" font-weight="bold" fill="#38a169" text-anchor="middle">94.5%</text>
+    </g>
+    
+    <!-- Prediction confidence meter -->
+    <g id="confidenceMeter">
+        <rect x="220" y="60" width="150" height="60" fill="white" rx="8" filter="url(#shadow)"/>
+        <text x="295" y="82" font-family="Arial" font-size="12" font-weight="bold" fill="#2d3748" text-anchor="middle">Confidence</text>
+        
+        <!-- Progress bar background -->
+        <rect x="235" y="92" width="120" height="15" fill="#e2e8f0" rx="7"/>
+        
+        <!-- Progress bar fill -->
+        <rect x="235" y="92" width="0" height="15" fill="#48bb78" rx="7">
+            <animate attributeName="width" values="0;102;0" dur="3s" repeatCount="indefinite"/>
+        </rect>
+        
+        <text x="295" y="103" font-family="Arial" font-size="10" fill="#1a202c" text-anchor="middle" font-weight="bold">85%</text>
+    </g>
+    
+    <!-- Decorative elements -->
+    <circle cx="30" cy="30" r="3" fill="#667eea" opacity="0.4">
+        <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="570" cy="30" r="3" fill="#48bb78" opacity="0.4">
+        <animate attributeName="opacity" values="0.4;0.8;0.4" dur="2.5s" repeatCount="indefinite"/>
+    </circle>
+    <circle cx="30" cy="380" r="3" fill="#f56565" opacity="0.4">
+        <animate attributeName="opacity" values="0.4;0.8;0.4" dur="3s" repeatCount="indefinite"/>
+    </circle>
+</svg>

@@ -1,0 +1,105 @@
+{% extends 'pages/base_page.html' %}
+
+{% block page_title %}Blog{% endblock %}
+
+{% block page_content %}
+<div class="blog-content">
+    <h2 class="h4 mb-4">Latest Articles</h2>
+    
+    <!-- Featured Article -->
+    <div class="card mb-4">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="https://via.placeholder.com/300x200" class="img-fluid rounded-start" alt="Heart Health">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h3 class="h5 card-title">Understanding Heart Disease: Risk Factors and Prevention</h3>
+                    <p class="card-text text-muted small">Published on October 20, 2025</p>
+                    <p class="card-text">Learn about the major risk factors for heart disease and practical steps you can take to reduce your risk and maintain a healthy heart.</p>
+                    <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Blog Post Grid -->
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        <!-- Blog Post 1 -->
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Healthy Eating">
+                <div class="card-body">
+                    <h3 class="h6 card-title">Heart-Healthy Diet: Foods to Include in Your Diet</h3>
+                    <p class="card-text text-muted small">October 15, 2025</p>
+                    <p class="card-text">Discover the best foods for heart health and how to incorporate them into your daily meals.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Blog Post 2 -->
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Exercise">
+                <div class="card-body">
+                    <h3 class="h6 card-title">The Best Exercises for a Healthy Heart</h3>
+                    <p class="card-text text-muted small">October 10, 2025</p>
+                    <p class="card-text">Learn about the most effective exercises for improving cardiovascular health and reducing heart disease risk.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Blog Post 3 -->
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Stress Management">
+                <div class="card-body">
+                    <h3 class="h6 card-title">Stress and Heart Health: What You Need to Know</h3>
+                    <p class="card-text text-muted small">October 5, 2025</p>
+                    <p class="card-text">Understand the connection between stress and heart disease, and learn effective stress management techniques.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Blog Post 4 -->
+        <div class="col">
+            <div class="card h-100">
+                <img src="https://via.placeholder.com/400x250" class="card-img-top" alt="Sleep">
+                <div class="card-body">
+                    <h3 class="h6 card-title">The Importance of Sleep for Heart Health</h3>
+                    <p class="card-text text-muted small">September 28, 2025</p>
+                    <p class="card-text">Discover how quality sleep affects your heart health and get tips for better sleep hygiene.</p>
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Newsletter Signup -->
+    <div class="card mt-5">
+        <div class="card-body text-center p-5">
+            <h3 class="h5 mb-3">Stay Updated with Our Latest Articles</h3>
+            <p class="text-muted mb-4">Subscribe to our newsletter to receive the latest health tips and updates directly to your inbox.</p>
+            <form class="row g-2 justify-content-center">
+                <div class="col-md-6">
+                    <input type="email" class="form-control" placeholder="Enter your email" required>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
