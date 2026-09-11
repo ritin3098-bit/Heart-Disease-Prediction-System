@@ -47,7 +47,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'heart_disese_prediction.urls'
+ROOT_URLCONF = 'heart_disease_prediction.urls'
 
 TEMPLATES = [
     {
@@ -70,7 +70,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'heart_disese_prediction.wsgi.application'
+WSGI_APPLICATION = 'heart_disease_prediction.wsgi.application'
 
 # Database
 DATABASES = {
